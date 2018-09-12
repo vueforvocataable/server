@@ -1,0 +1,1 @@
+module.exports.INVALED_QUERY_PARAMETER = 'Invalid query parameter.'
