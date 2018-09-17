@@ -6,8 +6,8 @@ module.exports = ({init, db}) => {
     api.get('/', async (req, res) => {
         try {
             let vocas = await Voca.find({})
-            .sort('-_id')
-            .limit(9);
+            .sort('-date')
+            .limit(7);
             
             res.status(200).json({vocas: vocas});
         } catch(err) {
@@ -17,6 +17,7 @@ module.exports = ({init, db}) => {
 
     api.post('/', async (req, res) => {
         let voca = req.body.voca;
+
         if (!voca) {
             return res.status(400).json({
                 message: `${errorMessage.INVALID_QUERY_PARAMETER}: ${voca}`
@@ -28,7 +29,7 @@ module.exports = ({init, db}) => {
                 voca: voca
             })
 
-            res.status(200).json({savedVoca: savedVoca});
+            res.status(201).json({savedVoca: savedVoca});
         } catch (err) {
             res.status(500).json({message: err.message});
         }

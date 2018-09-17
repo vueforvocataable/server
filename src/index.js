@@ -5,10 +5,12 @@ const init = require('./config');
 const router = express.Router();
 const routes = require('./routes')({router, init});
 const cors = require('cors');
+const prod = require('./config/production')(app);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 app.use('/api', routes);
 

@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const option = {
+    capped: {
+        size: 31457280, //30MB
+        max: 30
+    }
+}
+
 const vocaSchema = new Schema({
     voca: {
         type: String,
@@ -11,6 +18,6 @@ const vocaSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
+}, option);
 
 module.exports = mongoose.model('Voca', vocaSchema);
