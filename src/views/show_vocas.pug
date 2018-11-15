@@ -1,0 +1,63 @@
+html
+    head
+        style.
+           textarea {
+                position: absolute;
+                left: -100%;
+            }
+            container {
+                position:relative;
+            }
+            body {
+                background: #e2e1e0;
+                text-align: center;
+            }
+            #card {
+                overflow-x:scroll;
+                font-size: 0.7rem;
+                background: #fff;
+                border-radius: 2px;
+                display: inline-block;
+                margin: 1rem;
+                position: relative;
+                width: 300px;
+            }
+            #card:hover {
+                -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            }
+            #clipboard-label {
+                position: absolute;
+                color: white;
+                background-color: rgba(0, 0, 0, 0.555);
+                left: 87%;
+                top: 2px;
+                display: inline;
+                -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 10px 0 rgba(0, 0, 0, 0.19);
+                box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 10px 0 rgba(0, 0, 0, 0.19);
+                border-radius: 5px;
+            }
+            #clipboard-label:hover {
+                background-color: white;
+                color: black;
+            }
+    body
+        div.container
+            pre#card= voca
+                div#clipboard-label(onclick="test()") 복사하기
+
+script
+    | function test() {
+    |   const clipboardLabel = document.getElementById("clipboard-label")
+    |   const labelText = clipboardLabel.innerText
+    |   clipboardLabel.innerText = ""
+    |
+    |   const copyText = document.getElementById("card").innerText
+    |   const textArea = document.createElement('textarea')
+    |   textArea.textContent = copyText
+    |   document.body.append(textArea)
+    |   textArea.select()
+    |   document.execCommand("copy")
+    |   clipboardLabel.innerText = labelText
+    |   console.log(textArea.value)
+    | }              

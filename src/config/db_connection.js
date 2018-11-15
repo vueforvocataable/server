@@ -2,7 +2,7 @@ module.exports = (callback) => {
     const mongoose = require('mongoose');
     const init = require('./');
 
-    mongoose.connect(init.mongoUrl)
+    mongoose.connect(init.mongoUrl, { useNewUrlParser: true })
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error(('Could not connect to MongoDB...\n'), err));
     const conn = mongoose.connection;

@@ -1,52 +1,87 @@
 module.exports = ({init, db}) => {
-    const errorMessage = require('../error_message');
-    const Voca = require('../model/voca');
-    const api = require('express').Router();
+    const errorMessage = require('../error_message')
+    const Voca = require('../model/voca')
+    const api = require('express').Router()
+    const check = require('check-types')
 
     api.get('/', async (req, res) => {
         try {
             let vocas = await Voca.find({})
             .sort('-date')
-            .limit(7);
+            .limit(6)
             
-            res.status(200).json({vocas: vocas});
+            res.status(200).json({vocas: vocas})
         } catch(err) {
-            res.status(500).json({message: err.message});
+            res.status(500).json({message: err.message})
         }
-    });
+    })
+
+    api.get('/template/:id', async (req, res) => {
+        let vocaId = req.params.id
+
+        if (check.not.string(vocaId)) {
+            return res.status(400).json({
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (id)`
+            })
+        }
+
+        try {
+            let query = { '_id': vocaId }
+            let vocas = await Voca.findOne(query)
+
+            res.render('show_vocas', { voca: vocas.voca})
+        } catch(err) {
+            res.status(500).json({message: err.message})
+        }
+    })
 
     api.post('/', async (req, res) => {
         let voca = req.body.voca;
+        let category = req.body.category
 
-        if (!voca) {
+        if (check.not.string(voca)) {
             return res.status(400).json({
-                message: `${errorMessage.INVALID_QUERY_PARAMETER}: ${voca}`
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (voca)`
+            })
+        }
+        
+        if (check.not.string(category)) {
+            return res.status(400).json({
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (category)`
             })
         }
 
         try {
             let savedVoca = await Voca.create({
-                voca: voca
+                voca: voca,
+                category: category
             })
 
-            res.status(201).json({savedVoca: savedVoca});
+            res.status(201).json({savedVoca: savedVoca})
         } catch (err) {
-            res.status(500).json({message: err.message});
+            res.status(500).json({message: err.message})
         }
-    });
+    })
 
     api.delete('/:id', async (req, res) => {
-        let vocaId = req.params.id;
+        let vocaId = req.params.id
+
+        if (check.not.string(vocaId)) {
+            return res.status(400).json({
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (id)`
+            })
+        }
+
         try {
             let voca = await Voca.where('_id')
             .equals(vocaId)
-            .deleteOne();
+            .deleteOne()
 
-            res.status(200).json({voca: voca});
+            res.status(200).json({voca: voca})
         } catch (err) {
             res.status(500).json({message: err.message});
         }
     })
 
-    return api;
+    return api
 }
