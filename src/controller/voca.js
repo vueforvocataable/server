@@ -18,6 +18,7 @@ module.exports = ({init, db}) => {
 
     api.get('/template/:id', async (req, res) => {
         let vocaId = req.params.id
+        let category = req.query.category
 
         if (check.not.string(vocaId)) {
             return res.status(400).json({
@@ -25,8 +26,14 @@ module.exports = ({init, db}) => {
             })
         }
 
+        if (check.not.string(category)) {
+            return res.status(400).json({
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (category)`
+            })
+        }
+
         try {
-            let query = { '_id': vocaId }
+            let query = { '_id': vocaId, category: category }
             let vocas = await Voca.findOne(query)
 
             res.render('show_vocas', { voca: vocas.voca})
