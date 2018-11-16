@@ -1,6 +1,9 @@
 html
     head
         style.
+           html {
+               font-size: 14px;
+           }
            textarea {
                 position: absolute;
                 left: -100%;
@@ -30,7 +33,7 @@ html
                 position: absolute;
                 color: white;
                 background-color: rgba(0, 0, 0, 0.555);
-                left: 87%;
+                left: 85%;
                 top: 2px;
                 display: inline;
                 -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 10px 0 rgba(0, 0, 0, 0.19);
@@ -40,14 +43,28 @@ html
             #clipboard-label:hover {
                 background-color: white;
                 color: black;
+                cursor: pointer;
+            }
+            #clipboard-copied {
+                z-index: 1;
+                position: absolute;
+                color: white;
+                background-color: rgba(0, 0, 0, 0.8);
+                left: 80%;
+                top: 2%;
+                display: inline;
+                -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 10px 0 rgba(0, 0, 0, 0.19);
+                box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 10px 0 rgba(0, 0, 0, 0.19);
+                display: none;
             }
     body
         div.container
+            div#clipboard-copied 복사되었습니다.
             pre#card= voca
-                div#clipboard-label(onclick="test()") 복사하기
+                div#clipboard-label(onclick="copy()") 복사하기
 
 script
-    | function test() {
+    | function copy() {
     |   const clipboardLabel = document.getElementById("clipboard-label")
     |   const labelText = clipboardLabel.innerText
     |   clipboardLabel.innerText = ""
@@ -59,5 +76,13 @@ script
     |   textArea.select()
     |   document.execCommand("copy")
     |   clipboardLabel.innerText = labelText
-    |   console.log(textArea.value)
-    | }              
+    |   copied()
+    | }     
+    |   
+    | function copied() {
+    |   const copiedToggle = document.getElementById("clipboard-copied")
+    |   copiedToggle.style.display = "block"
+    |   setTimeout(function() {
+    |       copiedToggle.style.display = "none"
+    |   }, 1000)
+    | }           
