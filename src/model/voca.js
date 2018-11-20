@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const option = {
     capped: {
         size: 31457280, //30MB
-        max: 100
+        max: 100000
     }
 }
 

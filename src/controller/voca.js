@@ -1,12 +1,21 @@
-module.exports = ({init, db}) => {
+ module.exports = ({init, db}) => {
     const errorMessage = require('../error_message')
     const Voca = require('../model/voca')
     const api = require('express').Router()
     const check = require('check-types')
 
     api.get('/', async (req, res) => {
+        let category = req.query.category
+        
+        if (check.not.string(category)) {
+            return res.status(400).json({
+                message: `${errorMessage.INVALED_QUERY_PARAMETER}: (category)`
+            })
+        }
+        
         try {
-            let vocas = await Voca.find({})
+            let query = { category: category }
+            let vocas = await Voca.find(query)
             .sort('-date')
             .limit(6)
             
