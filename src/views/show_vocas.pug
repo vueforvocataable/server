@@ -103,16 +103,19 @@ script(type='text/javascript')
     
 script(type='text/javascript')
     | function copy() {
+    |   //라벨의 텍스트를 잠깐 지움
     |   const clipboardLabel = document.getElementById("clipboard-label")
     |   const labelText = clipboardLabel.innerText
     |   clipboardLabel.innerText = ""
     |
     |   const copyText = document.getElementById("card").innerText
     |   const textArea = document.createElement('textarea')
-    |   textArea.textContent = copyText
+    |   textArea.textContent = copyText.trim()
     |   document.body.append(textArea)
     |   textArea.select()
     |   document.execCommand("copy")
+    |
+    |   //라벨 텍스트 다시 넣음
     |   clipboardLabel.innerText = labelText
     |   copied()
     | }     
